@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agile Team Roles & Responsibilities Matrix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        :root {
+            --color-text-primary: #111827;
+            --color-text-secondary: #4b5563;
+            --color-text-tertiary: #6b7280;
+            --color-border-tertiary: #e5e7eb;
+            --color-background-primary: #ffffff;
+            --color-background-secondary: #f9fafb;
+            --color-background-tertiary: #f3f4f6;
+            --border-radius-md: 0.375rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-text-primary: #f9fafb;
+                --color-text-secondary: #d1d5db;
+                --color-text-tertiary: #9ca3af;
+                --color-border-tertiary: #374151;
+                --color-background-primary: #111827;
+                --color-background-secondary: #1f2937;
+                --color-background-tertiary: #374151;
+            }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-background-primary);
+            color: var(--color-text-primary);
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-w-7xl;
+            width: 100%;
+            background: var(--color-background-primary);
+            border-radius: var(--border-radius-md);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            border: 1px solid var(--color-border-tertiary);
+        }
+
+        .matrix-wrap { padding: 1rem 0; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; min-width: 900px; }
+        th { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); padding: 12px 4px; text-align: center; border-bottom: 0.5px solid var(--color-border-tertiary); }
+        th.row-header { text-align: left; font-size: 13px; font-weight: 600; color: var(--color-text-primary); width: 180px; }
+        th.platform-col { background: #EEEDFE; color: #3C3489 !important; border-radius: 6px 6px 0 0; }
+        
+        @media (prefers-color-scheme: dark) { 
+            th.platform-col { background: #26215C; color: #CECBF6 !important; } 
+        }
+        
+        td { padding: 10px 4px; text-align: center; border-bottom: 0.5px solid var(--color-border-tertiary); vertical-align: middle; height: 40px; }
+        td.label { text-align: left; font-size: 12px; color: var(--color-text-primary); padding-left: 10px; font-weight: 500;}
+        td.label-sub { text-align: left; font-size: 11px; color: var(--color-text-secondary); padding-left: 24px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+        td.cat { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-align: left; padding: 16px 10px 6px; color: var(--color-text-tertiary); border-bottom: none; background: var(--color-background-secondary); text-transform: uppercase; }
+        td.subcat { font-size: 10px; font-weight: 600; letter-spacing: .03em; text-align: left; padding: 12px 10px 4px 20px; color: var(--color-text-secondary); border-bottom: none; background: var(--color-background-tertiary); text-transform: uppercase; }
+        
+        tr.cat-row td, tr.subcat-row td { border-bottom: none; }
+        tr:hover td:not(.cat):not(.subcat) { background: var(--color-background-secondary); }
+
+        .icon-owner    { color: #534AB7; font-size: 22px; transition: transform 0.1s; }
+        .icon-fallback { color: #8b929e; font-size: 22px; transition: transform 0.1s; }
+        td:hover .icon-owner, td:hover .icon-fallback { transform: scale(1.1); }
+
+        .legend { display: flex; gap: 24px; flex-wrap: wrap; margin: 0.5rem 0 1.25rem; padding: 12px 16px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); border: 1px solid var(--color-border-tertiary); }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--color-text-secondary); }
+
+        .role-header { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .badge { font-size: 9px; font-weight: 600; border-radius: 4px; padding: 2px 6px; margin-top: 2px; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.02em; }
+        
+        .badge-senior  { background: #EEEDFE; color: #3C3489; }
+        .badge-worker  { background: #E1F5EE; color: #085041; }
+        .badge-both    { background: #FFF3DC; color: #7A4500; }
+        .badge-manager { background: #E6F1FB; color: #0C447C; }
+        .badge-coach   { background: #FCE8F3; color: #7A1250; }
+        
+        @media (prefers-color-scheme: dark) {
+            .badge-senior  { background: #26215C; color: #CECBF6; }
+            .badge-worker  { background: #085041; color: #9FE1CB; }
+            .badge-both    { background: #7A4500; color: #FAD79A; }
+            .badge-manager { background: #0C447C; color: #B5D4F4; }
+            .badge-coach   { background: #7A1250; color: #F7BEDD; }
+        }
+        .duration { font-size: 10px; color: var(--color-text-tertiary); font-style: italic; margin-left: 4px; font-weight: normal; }
+
+        /* Editing utilities */
+        .editable { cursor: text; outline: none; border-radius: 2px; transition: background 0.2s; }
+        .editable:focus { background: rgba(0,0,0,0.05); }
+        @media (prefers-color-scheme: dark) { .editable:focus { background: rgba(255,255,255,0.1); } }
+        .matrix-cell { cursor: pointer; border-radius: 4px; transition: background 0.1s; }
+        .matrix-cell:hover { background: rgba(83, 74, 183, 0.1) !important; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="mb-6">
+            <h1 class="editable text-2xl font-bold" style="font-size: 24px; margin-bottom: 8px;">Agile Team Roles & Responsibilities Matrix</h1>
+            <p style="color: var(--color-text-secondary); font-size: 14px; margin-top: 0;">Clear boundaries for ceremonies, backlog, DevEx, and planning. <span style="font-size: 12px; background: var(--color-background-secondary); padding: 2px 6px; border-radius: 4px; margin-left: 8px;">✨ Click cells to cycle icons or text to edit</span></p>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><i class="ti ti-crown icon-owner" style="font-size:20px"></i> Owns it</div>
+            <div class="legend-item"><i class="ti ti-shield icon-fallback" style="font-size:20px"></i> Fallback — covers when needed</div>
+        </div>
+
+        <div class="matrix-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="row-header">Activity</th>
+                        <th class="platform-col">
+                            <div class="role-header">
+                                <i class="ti ti-device-desktop" style="font-size:18px"></i>
+                                <span class="editable">Platform</span>
+                                <span class="badge badge-senior">senior dev</span>
+                                <span class="badge badge-worker">⚒ worker</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="role-header">
+                                <i class="ti ti-bug" style="font-size:18px"></i>
+                                <span class="editable">QA</span>
+                                <span class="badge badge-worker">⚒ worker</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="role-header">
+                                <i class="ti ti-code" style="font-size:18px"></i>
+                                <span class="editable">Dev</span>
+                                <span class="badge badge-worker">⚒ worker</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="role-header">
+                                <i class="ti ti-package" style="font-size:18px"></i>
+                                <span class="editable">Product</span>
+                                <span class="badge badge-manager">▲ manager</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="role-header">
+                                <i class="ti ti-refresh" style="font-size:18px"></i>
+                                <span class="editable">Scrum Master</span>
+                                <span class="badge badge-coach">❋ coach</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="role-header">
+                                <i class="ti ti-layout-kanban" style="font-size:18px"></i>
+                                <span class="editable">Project</span>
+                                <span class="badge badge-manager">▲ manager</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="role-header">
+                                <i class="ti ti-users" style="font-size:18px"></i>
+                                <span class="editable">Team Lead</span>
+                                <span class="badge badge-both">⚒ worker + manager</span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="cat-row"><td class="cat editable" colspan="8">Ceremonies</td></tr>
+                    <tr>
+                        <td class="label editable">Daily standup</td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                    </tr>
+
+                    <tr class="subcat-row"><td class="subcat editable" colspan="8">↳ Sprint planning</td></tr>
+                    <tr>
+                        <td class="label-sub"><span class="editable">Pre-planning</span></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="label-sub"><span class="editable">Task breakdown</span></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="label-sub"><span class="editable">Task review</span> <span class="duration">~10 min each</span></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                    </tr>
+
+                    <tr>
+                        <td class="label editable">Grooming / refinement</td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Sprint review</td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Sprint retrospective</td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                    </tr>
+
+                    <tr class="cat-row"><td class="cat editable" colspan="8">Backlog & work items</td></tr>
+                    <tr>
+                        <td class="label editable">Create PBI</td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Create tasks</td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Create bug</td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Handle backlog</td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Work on task</td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Work on PBI</td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                    </tr>
+
+                    <tr class="cat-row"><td class="cat editable" colspan="8">Platform / Developer Experience</td></tr>
+                    <tr>
+                        <td class="label editable">Maintain devcontainer</td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">AI tooling (claude.md, MCP, memory)</td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Update apps & libraries</td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Create automations</td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">DevOps ticket — write & follow up</td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                    </tr>
+
+                    <tr class="cat-row"><td class="cat editable" colspan="8">Technical quality</td></tr>
+                    <tr>
+                        <td class="label editable">Architecture decisions</td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Code review</td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                    </tr>
+
+                    <tr class="cat-row"><td class="cat editable" colspan="8">Planning & visibility</td></tr>
+                    <tr>
+                        <td class="label editable">Configure Azure Boards</td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Sprint timeline & flow</td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Blocker removal</td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="label editable">Stakeholder communication</td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-crown icon-owner"></i></td>
+                        <td class="matrix-cell"></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                        <td class="matrix-cell"><i class="ti ti-shield icon-fallback"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Make text fields editable
+            const editables = document.querySelectorAll('.editable');
+            editables.forEach(el => {
+                el.setAttribute('contenteditable', 'true');
+                el.addEventListener('focus', function() {
+                    this.style.boxShadow = 'inset 0 -2px 0 0 rgba(83, 74, 183, 0.5)';
+                });
+                el.addEventListener('blur', function() {
+                    this.style.boxShadow = 'none';
+                });
+            });
+
+            // Make the matrix assignment cells click-to-cycle
+            const iconCrown = '<i class="ti ti-crown icon-owner"></i>';
+            const iconFallback = '<i class="ti ti-shield icon-fallback"></i>';
+
+            const assignmentCells = document.querySelectorAll('.matrix-cell');
+            assignmentCells.forEach(cell => {
+                cell.title = "Click to cycle: Owns (Crown) ➔ Fallback (Shield) ➔ Empty";
+                
+                cell.addEventListener('click', function() {
+                    const html = this.innerHTML;
+                    
+                    // Cycle: Crown -> Shield -> Empty
+                    if (html.includes('ti-crown')) {
+                        this.innerHTML = iconFallback;
+                    } else if (html.includes('ti-shield')) {
+                        this.innerHTML = '';
+                    } else {
+                        this.innerHTML = iconCrown;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
